@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private Vector3 jumpDir;
 
+    public GameObject sword;
+    private bool isSwordEquiped = false;
+
     private void FixedUpdate()
     {
         angleY = Input.GetAxis("Mouse X") * Time.fixedDeltaTime * turnSpeed;
@@ -35,6 +38,7 @@ public class PlayerController : MonoBehaviour
             Move(dirZ, "isWalkForward", "isWalkBack");
             Sprint();
             Dodge();
+            SwordActivate();
         }
         else
         {
@@ -101,5 +105,26 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = true;
         animator.applyRootMotion = true;
+    }
+
+    private void SwordEquipe()
+    {
+        sword.transform.SetParent(GameObject.Find("RightHand").transform);
+    }
+
+    private void SwordActivate()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (!isSwordEquiped)
+            {
+                animator.Play("Equip");
+                isSwordEquiped = true;
+            }
+            else
+            {
+                animator.Play("Sword_Attack_R");
+            }
+        }
     }
 }
